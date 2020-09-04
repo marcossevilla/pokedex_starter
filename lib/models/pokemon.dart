@@ -21,102 +21,35 @@ class BasePokemon {
   String name;
   String url;
 
-  BasePokemon({
-    this.name,
-    this.url,
-  });
+  BasePokemon({this.name, this.url});
 
   factory BasePokemon.fromJson(Map<String, dynamic> json) {
-    return BasePokemon(
-      name: json["name"],
-      url: json["url"],
-    );
+    return BasePokemon(name: json["name"], url: json["url"]);
   }
 
   Map<String, dynamic> toJson() => {"name": name, "url": url};
 }
 
-Pokemon pokemonFromJson(String str) => Pokemon.fromJson(json.decode(str));
+ApiPokemon pokemonFromJson(String str) => ApiPokemon.fromJson(json.decode(str));
 
-class Pokemon {
+class ApiPokemon {
   int id;
   String name;
-  Species species;
   Sprites sprites;
-  List<Stat> stats;
-  List<Type> types;
-  List<Species> forms;
-  List<Ability> abilities;
 
-  Pokemon({
+  ApiPokemon({
     this.id,
     this.name,
-    this.species,
     this.sprites,
-    this.stats,
-    this.types,
-    this.forms,
-    this.abilities,
   });
 
-  factory Pokemon.fromJson(Map<String, dynamic> json) => Pokemon(
-        id: json["id"],
-        name: json["name"],
-        stats: List<Stat>.from(json["stats"].map((x) => Stat.fromJson(x))),
-        types: List<Type>.from(json["types"].map((x) => Type.fromJson(x))),
-        forms: List<Species>.from(
-          json["forms"].map((x) => Species.fromJson(x)),
-        ),
-        species: Species.fromJson(json["species"]),
-        sprites: Sprites.fromJson(json["sprites"]),
-        abilities: List<Ability>.from(
-          json["abilities"].map((x) => Ability.fromJson(x)),
-        ),
-      );
-}
-
-class Ability {
-  Species ability;
-  bool isHidden;
-  int slot;
-
-  Ability({
-    this.ability,
-    this.isHidden,
-    this.slot,
-  });
-
-  factory Ability.fromJson(Map<String, dynamic> json) => Ability(
-        ability: Species.fromJson(json["ability"]),
-        isHidden: json["is_hidden"],
-        slot: json["slot"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "ability": ability.toJson(),
-        "is_hidden": isHidden,
-        "slot": slot,
-      };
-}
-
-class Species {
-  String name;
-  String url;
-
-  Species({
-    this.name,
-    this.url,
-  });
-
-  factory Species.fromJson(Map<String, dynamic> json) => Species(
-        name: json["name"],
-        url: json["url"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "url": url,
-      };
+  factory ApiPokemon.fromJson(Map<String, dynamic> json) {
+    return ApiPokemon(
+      id: json["id"],
+      name: json["name"],
+      sprites: Sprites.fromJson(json["sprites"]),
+    );
+  }
 }
 
 class Sprites {
@@ -160,49 +93,5 @@ class Sprites {
         "front_female": frontFemale,
         "front_shiny": frontShiny,
         "front_shiny_female": frontShinyFemale,
-      };
-}
-
-class Stat {
-  int baseStat;
-  int effort;
-  Species stat;
-
-  Stat({
-    this.baseStat,
-    this.effort,
-    this.stat,
-  });
-
-  factory Stat.fromJson(Map<String, dynamic> json) => Stat(
-        baseStat: json["base_stat"],
-        effort: json["effort"],
-        stat: Species.fromJson(json["stat"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "base_stat": baseStat,
-        "effort": effort,
-        "stat": stat.toJson(),
-      };
-}
-
-class Type {
-  int slot;
-  Species type;
-
-  Type({
-    this.slot,
-    this.type,
-  });
-
-  factory Type.fromJson(Map<String, dynamic> json) => Type(
-        slot: json["slot"],
-        type: Species.fromJson(json["type"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "slot": slot,
-        "type": type.toJson(),
       };
 }
