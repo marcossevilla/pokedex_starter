@@ -8,9 +8,9 @@ This project is a starting point for a Flutter application.
 
 You need to run:
 
-'''sh
+```sh
 flutter pub get
-'''
+```
 
 in order to get this project's packages.
 
