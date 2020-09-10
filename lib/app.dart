@@ -8,7 +8,7 @@ class Pokedex extends StatelessWidget {
     return MaterialApp(
       title: 'Pokédex Demo',
       theme: ThemeData(
-        fontFamily: 'Pokemon',
+        // fontFamily: 'Pokemon',
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
