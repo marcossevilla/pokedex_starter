@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:pokedex_starter/models/pokemon.dart';
-import 'package:pokedex_starter/widgets/poke_card.dart';
+import '../models/pokemon.dart';
+import '../widgets/poke_card.dart';
 
 /*
   * you'll need this:
@@ -26,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final response = await http.get(HomeScreen.url);
     final decode = json.decode(response.body);
     final data = Pokemons.fromJson(decode['results']);
-    setState(() {
-      pokemons = data;
-    });
+    setState(() => pokemons = data);
   }
 
   @override
@@ -61,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             )
           : GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
               children: List.generate(
                 pokemons.pokemons.length,
                 (index) => PokeCard(
