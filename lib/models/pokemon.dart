@@ -4,6 +4,12 @@
 
 import 'dart:convert';
 
+import 'stat.dart';
+import 'ability.dart';
+import 'sprites.dart';
+import 'species.dart';
+import 'type.dart' as type;
+
 class Pokemons {
   List<BasePokemon> pokemons = [];
 
@@ -21,10 +27,13 @@ class BasePokemon {
   String name;
   String url;
 
-  BasePokemon({this.name, this.url});
+  // * new property set in the app
+  bool catched;
+
+  BasePokemon({this.name, this.url, this.catched = false});
 
   factory BasePokemon.fromJson(Map<String, dynamic> json) {
-    return BasePokemon(name: json["name"], url: json["url"]);
+    return BasePokemon(name: json["name"], url: json["url"], catched: false);
   }
 
   Map<String, dynamic> toJson() => {"name": name, "url": url};
@@ -35,63 +44,40 @@ ApiPokemon pokemonFromJson(String str) => ApiPokemon.fromJson(json.decode(str));
 class ApiPokemon {
   int id;
   String name;
+  Species species;
   Sprites sprites;
+  List<Stat> stats;
+  List<type.Type> types;
+  List<Species> forms;
+  List<Ability> abilities;
 
   ApiPokemon({
     this.id,
     this.name,
+    this.species,
     this.sprites,
+    this.stats,
+    this.types,
+    this.forms,
+    this.abilities,
   });
 
   factory ApiPokemon.fromJson(Map<String, dynamic> json) {
     return ApiPokemon(
       id: json["id"],
       name: json["name"],
+      stats: List<Stat>.from(json["stats"]?.map((x) => Stat.fromJson(x))),
+      types: List<type.Type>.from(
+        json["types"]?.map((x) => type.Type.fromJson(x)),
+      ),
+      forms: List<Species>.from(
+        json["forms"]?.map((x) => Species.fromJson(x)),
+      ),
+      species: Species.fromJson(json["species"]),
       sprites: Sprites.fromJson(json["sprites"]),
+      abilities: List<Ability>.from(
+        json["abilities"]?.map((x) => Ability.fromJson(x)),
+      ),
     );
   }
-}
-
-class Sprites {
-  String backDefault;
-  dynamic backFemale;
-  String backShiny;
-  dynamic backShinyFemale;
-  String frontDefault;
-  dynamic frontFemale;
-  String frontShiny;
-  dynamic frontShinyFemale;
-
-  Sprites({
-    this.backDefault,
-    this.backFemale,
-    this.backShiny,
-    this.backShinyFemale,
-    this.frontDefault,
-    this.frontFemale,
-    this.frontShiny,
-    this.frontShinyFemale,
-  });
-
-  factory Sprites.fromJson(Map<String, dynamic> json) => Sprites(
-        backDefault: json["back_default"],
-        backFemale: json["back_female"],
-        backShiny: json["back_shiny"],
-        backShinyFemale: json["back_shiny_female"],
-        frontDefault: json["front_default"],
-        frontFemale: json["front_female"],
-        frontShiny: json["front_shiny"],
-        frontShinyFemale: json["front_shiny_female"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "back_default": backDefault,
-        "back_female": backFemale,
-        "back_shiny": backShiny,
-        "back_shiny_female": backShinyFemale,
-        "front_default": frontDefault,
-        "front_female": frontFemale,
-        "front_shiny": frontShiny,
-        "front_shiny_female": frontShinyFemale,
-      };
 }

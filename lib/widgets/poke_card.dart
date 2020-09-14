@@ -1,14 +1,14 @@
 // * this will be your customized StatefulWidget
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 import '../screens/detail.dart';
 import '../models/pokemon.dart';
+import '../state/pokemons_state.dart';
 
 class PokeCard extends StatefulWidget {
   const PokeCard({Key key, this.pokeURL}) : super(key: key);
@@ -23,9 +23,7 @@ class _PokeCardState extends State<PokeCard> {
   ApiPokemon pokemon;
 
   _fetchData() async {
-    final response = await http.get(widget.pokeURL);
-    final decode = json.decode(response.body);
-    final data = ApiPokemon.fromJson(decode);
+    final data = await context.read<PokemonsState>().getPokemon(widget.pokeURL);
     setState(() => pokemon = data);
   }
 
@@ -48,7 +46,10 @@ class _PokeCardState extends State<PokeCard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Flexible(
-                        child: Image.network(pokemon.sprites.frontDefault)),
+                      child: Image.network(
+                        pokemon.sprites.frontDefault,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: Text(toBeginningOfSentenceCase(pokemon.name)),

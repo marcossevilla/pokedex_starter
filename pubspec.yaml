@@ -17,6 +17,8 @@ dependencies:
   # * packages we need
   intl: ^0.16.1 # optional
   http: ^0.12.2
+  provider: ^4.3.2+2
+  equatable: ^1.2.5
 
 dev_dependencies:
   flutter_test:
@@ -27,12 +29,8 @@ flutter:
   uses-material-design: true
 
   assets:
-  # * images we need
+    # * images we need
     - assets/images/pikachu.png
     - assets/images/pokeball.png
-  # * fonts we need
-  fonts:
-    - family: Pokemon
-      fonts:
-        - asset: assets/fonts/PokemonHollow.ttf
-        - asset: assets/fonts/PokemonSolid.ttf
+  
+

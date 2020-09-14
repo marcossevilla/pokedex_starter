@@ -1,58 +1,34 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../models/pokemon.dart';
+import '../screens/catched.dart';
 import '../widgets/poke_card.dart';
+import '../state/pokemons_state.dart';
 
-/*
-  * you'll need this:
-  static const String url = 'https://pokeapi.co/api/v2/pokemon/';
-*/
-
-class HomeScreen extends StatefulWidget {
-  static const String url = 'https://pokeapi.co/api/v2/pokemon/';
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  Pokemons pokemons;
-
-  _fetchData() async {
-    final response = await http.get(HomeScreen.url);
-    final decode = json.decode(response.body);
-    final data = Pokemons.fromJson(decode['results']);
-    setState(() => pokemons = data);
-  }
-
-  @override
-  void initState() {
-    _fetchData();
-    super.initState();
-  }
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<BasePokemon> pokemons = context.select(
+      (PokemonsState pokeState) => pokeState.pokemons,
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         elevation: 0.0,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/pikachu.png',
-              width: 50.0,
-              height: 50.0,
-            ),
-            Text('Pokédex'),
-          ],
-        ),
+        centerTitle: false,
+        leading: _PaddedImage(asset: 'assets/images/pikachu.png'),
+        title: Text('Pokédex'),
+        actions: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(CatchedScreen.go()),
+            child: _PaddedImage(asset: 'assets/images/pokeball.png'),
+          ),
+        ],
       ),
-      body: pokemons == null
+      body: pokemons.isEmpty
           ? Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -61,12 +37,27 @@ class _HomeScreenState extends State<HomeScreen> {
           : GridView.count(
               crossAxisCount: 3,
               children: List.generate(
-                pokemons.pokemons.length,
-                (index) => PokeCard(
-                  pokeURL: pokemons.pokemons[index].url,
-                ),
+                pokemons.length,
+                (index) => PokeCard(pokeURL: pokemons[index].url),
               ),
             ),
+    );
+  }
+}
+
+class _PaddedImage extends StatelessWidget {
+  const _PaddedImage({
+    Key key,
+    @required this.asset,
+  }) : super(key: key);
+
+  final String asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(asset, width: 50.0, height: 50.0),
     );
   }
 }
