@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 
 import '../screens/detail.dart';
 import '../models/pokemon.dart';
-import '../state/pokemons_state.dart';
 
 class PokeCard extends StatefulWidget {
   const PokeCard({Key key, this.pokeURL}) : super(key: key);
@@ -23,8 +22,7 @@ class _PokeCardState extends State<PokeCard> {
   ApiPokemon pokemon;
 
   _fetchData() async {
-    final data = await context.read<PokemonsState>().getPokemon(widget.pokeURL);
-    setState(() => pokemon = data);
+    // TODO: new logic to fetch pokemons from state manager and then api
   }
 
   @override

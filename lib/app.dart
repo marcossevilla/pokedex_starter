@@ -9,16 +9,14 @@ import 'state/pokemons_state.dart';
 class Pokedex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => PokemonsState(PokemonApi()),
-      child: MaterialApp(
-        title: 'Pokédex Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: HomeScreen(),
+    // TODO: Setup state management
+    return MaterialApp(
+      title: 'Pokédex Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: HomeScreen(),
     );
   }
 }

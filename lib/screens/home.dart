@@ -10,9 +10,7 @@ import '../state/pokemons_state.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<BasePokemon> pokemons = context.select(
-      (PokemonsState pokeState) => pokeState.pokemons,
-    );
+    final pokemons = [];
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
